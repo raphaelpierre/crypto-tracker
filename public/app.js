@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = cardTemplate.content.cloneNode(true);
         
         card.querySelector('.symbol').textContent = data.symbol;
-        card.querySelector('.price').textContent = `$${formatPrice(data.currentPrice)}`;
+        card.querySelector('.price').textContent = `$${formatPrice(data.price)}`;
         
         const changePercent = parseFloat(data.priceChangePercent);
         const changeElement = card.querySelector('.change');
@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         filterCryptos(e.target.value);
     });
 
-    // Fetch crypto data
+    // Fetch crypto data from Binance public API
     const fetchCryptoData = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/24hr');
+            const response = await fetch('https://api.binance.com/api/v3/ticker/24hr');
             cryptoData = await response.json();
             filterCryptos('');
 
