@@ -27,15 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const createCryptoCard = (data) => {
         const card = cardTemplate.content.cloneNode(true);
         
-        card.querySelector('.symbol').textContent = data.symbol;
-        card.querySelector('.price').textContent = `$${formatPrice(data.price)}`;
+        // Remove USDT from symbol display
+        const symbol = data.symbol.replace('USDT', '');
+        card.querySelector('.symbol').textContent = symbol;
+        
+        // Use lastPrice for current price
+        card.querySelector('.price').textContent = `$${formatPrice(data.lastPrice)}`;
         
         const changePercent = parseFloat(data.priceChangePercent);
         const changeElement = card.querySelector('.change');
         changeElement.textContent = `${changePercent > 0 ? '+' : ''}${changePercent.toFixed(2)}%`;
         changeElement.classList.add(changePercent >= 0 ? 'positive' : 'negative');
         
-        card.querySelector('.volume span').textContent = formatNumber(data.volume);
+        card.querySelector('.volume span').textContent = formatNumber(data.quoteVolume);
         card.querySelector('.high span').textContent = `$${formatPrice(data.highPrice)}`;
         card.querySelector('.low span').textContent = `$${formatPrice(data.lowPrice)}`;
         
@@ -112,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update market stats
             const totalVolume = cryptoData
                 .filter(crypto => crypto.symbol.endsWith('USDT'))
-                .reduce((acc, curr) => acc + parseFloat(curr.volume), 0);
+                .reduce((acc, curr) => acc + parseFloat(curr.quoteVolume), 0);
             
             document.getElementById('volume').textContent = `$${formatNumber(totalVolume)}`;
             
