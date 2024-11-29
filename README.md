@@ -1,14 +1,26 @@
 # 🚀 CryptoPunk Tracker: Where Lambos Meet ASCII Art
 
 ```ascii
-     💰 TO THE MOON! 💰
-         .
-       .:::.
-     .::::::::.
-    :::::::::::  
-    ':::::::::' 
-     ':::::'
-       ':'
+           ⚡ CRYPTO NEVER SLEEPS ⚡
+    
+         ╔═══════════════════════╗
+         ║  ▄▄▄   ▄▄▄   ▄▄▄▄▄   ║
+      ╔══║  ███   ███   █████   ║══╗
+      ║  ║  ▀▀▀   ▀▀▀   ▀▀▀▀▀   ║  ║
+      ║  ║    CRYPTOPUNK 2024    ║  ║
+      ║  ║     ┌─────────┐      ║  ║
+      ║  ║ ▓▓  │ B╔═╗C   │  ▓▓  ║  ║
+      ║  ║     │ T║$║    │      ║  ║
+      ║  ║ ██  │ C╚═╝    │  ██  ║  ║
+      ║  ║     └─────────┘      ║  ║
+      ║  ║  [ HODL THE LINE! ]   ║  ║
+      ║  ║   ╔═╦═╦═╦═╦═╦═╗      ║  ║
+      ║  ╚═══╣█║█║█║█║█║█╠═══════╝  ║
+      ╚══════╩═╩═╩═╩═╩═╩═╩══════════╝
+             <NETWORK STATUS>
+         [▓▓▓▓▓▓▓▓▓▓░░] 89% BULLISH
+     
+     /Loading cyberpunk market data.../
 ```
 
 ## 🤖 What's This Cyberpunk Madness?

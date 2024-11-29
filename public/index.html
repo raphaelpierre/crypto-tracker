@@ -6,6 +6,15 @@
     <title>CryptoPunk Tracker</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWYL03P9KK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-QWYL03P9KK');
+    </script>
 </head>
 <body>
     <div class="container">
@@ -55,6 +64,49 @@
             </div>
         </div>
     </template>
+
+    <!-- Detailed View Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <h2 class="coin-title neon-text"></h2>
+                <div class="price-info">
+                    <span id="detailPrice" class="neon-text"></span>
+                    <span id="detailChange"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="chart-container">
+                    <div id="priceChart"></div>
+                    <div class="time-controls">
+                        <button class="time-btn active" data-interval="1h">1H</button>
+                        <button class="time-btn" data-interval="4h">4H</button>
+                        <button class="time-btn" data-interval="1d">1D</button>
+                        <button class="time-btn" data-interval="1w">1W</button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <label>24h High</label>
+                        <span id="detailHigh"></span>
+                    </div>
+                    <div class="stat-item">
+                        <label>24h Low</label>
+                        <span id="detailLow"></span>
+                    </div>
+                    <div class="stat-item">
+                        <label>Volume</label>
+                        <span id="detailVolume"></span>
+                    </div>
+                    <div class="stat-item">
+                        <label>Quote Volume</label>
+                        <span id="detailQuoteVolume"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
