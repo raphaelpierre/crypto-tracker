@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cryptoGrid = document.getElementById('cryptoGrid');
     const searchInput = document.getElementById('searchInput');
     const cardTemplate = document.getElementById('crypto-card-template');
+    const marketCapElement = document.getElementById('marketCap');
     
     let cryptoData = [];
 
@@ -65,6 +66,42 @@ document.addEventListener('DOMContentLoaded', () => {
         filterCryptos(e.target.value);
     });
 
+    // Calculate total market cap
+    const calculateMarketCap = (data) => {
+        const topCoins = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'XRPUSDT', 'ADAUSDT', 
+                         'DOGEUSDT', 'DOTUSDT', 'UNIUSDT', 'LTCUSDT', 'LINKUSDT'];
+        
+        const marketCap = data
+            .filter(crypto => topCoins.includes(crypto.symbol))
+            .reduce((total, crypto) => {
+                const price = parseFloat(crypto.lastPrice);
+                // Estimated circulation based on typical market share
+                let circulation;
+                switch(crypto.symbol) {
+                    case 'BTCUSDT':
+                        circulation = 19_000_000; // Approximate BTC circulation
+                        break;
+                    case 'ETHUSDT':
+                        circulation = 120_000_000; // Approximate ETH circulation
+                        break;
+                    case 'BNBUSDT':
+                        circulation = 153_856_150; // Approximate BNB circulation
+                        break;
+                    case 'XRPUSDT':
+                        circulation = 45_404_028_640; // Approximate XRP circulation
+                        break;
+                    case 'ADAUSDT':
+                        circulation = 35_000_000_000; // Approximate ADA circulation
+                        break;
+                    default:
+                        circulation = 0;
+                }
+                return total + (price * circulation);
+            }, 0);
+
+        return marketCap;
+    };
+
     // Fetch crypto data from Binance public API
     const fetchCryptoData = async () => {
         try {
@@ -78,6 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .reduce((acc, curr) => acc + parseFloat(curr.volume), 0);
             
             document.getElementById('volume').textContent = `$${formatNumber(totalVolume)}`;
+            
+            // Update market cap
+            const marketCap = calculateMarketCap(cryptoData);
+            marketCapElement.textContent = `$${formatNumber(marketCap)}`;
             
         } catch (error) {
             console.error('Error fetching crypto data:', error);

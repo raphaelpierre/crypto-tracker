@@ -1,0 +1,76 @@
+# 🙈 Node Modules (aka "the black hole of dependencies")
+node_modules/
+
+# 🔐 Environment variables (keep your secrets... secret)
+.env
+.env.local
+.env.*.local
+
+# 📝 Logs (nobody needs to see your debug struggles)
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# 📱 OS generated files (because Windows and Mac can't just get along)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 👾 IDE specific files (because every developer has their favorite)
+.idea/
+.vscode/
+*.swp
+*.swo
+.vs/
+*.sublime-workspace
+*.sublime-project
+
+# 🏗️ Build output (the stuff that makes your app actually work)
+dist/
+build/
+out/
+.next/
+
+# 🧪 Test coverage (the proof that your code actually works... or not)
+coverage/
+
+# 📦 Package manager files (because one package manager is never enough)
+yarn.lock
+package-lock.json
+.pnpm-lock.yaml
+
+# 🗑️ Temporary files (the stuff you forgot to delete)
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# 🚫 Local development files (your personal playground)
+*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 💸 Crypto wallet files (just kidding, don't store those here!)
+*.wallet
+private-keys.txt
+seed-phrases.txt
+
+# 🎮 Custom ignores for this project
+# Add your project-specific ignores here
+
+# 🐛 Debug files (your dirty little debugging secrets)
+debug.log
+debug.json
+
+# 🔥 Hot reload files (because who doesn't love live updates?)
+*.hot-update.js
+*.hot-update.json
