@@ -202,6 +202,42 @@ header {
     margin-bottom: 10px;
 }
 
+.error-message {
+    background: rgba(255, 45, 85, 0.1);
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 0.05em 0 0 var(--neon-blue), -0.05em -0.025em 0 var(--neon-pink);
+    }
+    14% {
+        text-shadow: 0.05em 0 0 var(--neon-blue), -0.05em -0.025em 0 var(--neon-pink);
+    }
+    15% {
+        text-shadow: -0.05em -0.025em 0 var(--neon-blue), 0.025em 0.025em 0 var(--neon-pink);
+    }
+    49% {
+        text-shadow: -0.05em -0.025em 0 var(--neon-blue), 0.025em 0.025em 0 var(--neon-pink);
+    }
+    50% {
+        text-shadow: 0.025em 0.05em 0 var(--neon-blue), 0.05em 0 0 var(--neon-pink);
+    }
+    99% {
+        text-shadow: 0.025em 0.05em 0 var(--neon-blue), 0.05em 0 0 var(--neon-pink);
+    }
+    100% {
+        text-shadow: -0.025em 0 0 var(--neon-blue), -0.025em -0.025em 0 var(--neon-pink);
+    }
+}
+
 @media (max-width: 768px) {
     .crypto-grid {
         grid-template-columns: 1fr;

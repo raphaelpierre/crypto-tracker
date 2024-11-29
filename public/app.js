@@ -109,13 +109,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch crypto data from Binance public API
     const fetchCryptoData = async () => {
         try {
-            const response = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+            // Using api3.binance.com which has CORS enabled
+            const response = await fetch('https://api3.binance.com/api/v3/ticker/24hr');
             cryptoData = await response.json();
+            
+            // Filter only USDT pairs and sort by volume
+            cryptoData = cryptoData
+                .filter(crypto => crypto.symbol.endsWith('USDT'))
+                .sort((a, b) => parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume));
+            
             filterCryptos('');
 
             // Update market stats
             const totalVolume = cryptoData
-                .filter(crypto => crypto.symbol.endsWith('USDT'))
                 .reduce((acc, curr) => acc + parseFloat(curr.quoteVolume), 0);
             
             document.getElementById('volume').textContent = `$${formatNumber(totalVolume)}`;
@@ -126,6 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (error) {
             console.error('Error fetching crypto data:', error);
+            // Display error message on the page
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error-message';
+            errorMsg.textContent = 'Failed to fetch crypto data. Please try again later.';
+            cryptoGrid.innerHTML = '';
+            cryptoGrid.appendChild(errorMsg);
         }
     };
 
