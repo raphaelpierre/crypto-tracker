@@ -179,13 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize chart
     const initChart = () => {
+        const chartContainer = document.getElementById('priceChart');
+        if (!chartContainer) {
+            console.error('Chart container not found');
+            return null;
+        }
+
         if (chart) {
             chart.remove();
         }
 
         const chartOptions = {
+            width: chartContainer.clientWidth,
+            height: 400,
             layout: {
-                background: { color: 'transparent' },
+                background: { type: 'solid', color: 'rgba(0, 0, 0, 0.5)' },
                 textColor: '#FFFFFF',
             },
             grid: {
@@ -212,26 +220,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     labelBackgroundColor: '#7B2BF9',
                 },
             },
+            rightPriceScale: {
+                borderColor: '#7B2BF9',
+            },
         };
 
-        chart = LightweightCharts.createChart(
-            document.getElementById('priceChart'),
-            chartOptions
-        );
-
-        return chart.addCandlestickSeries({
-            upColor: '#00ff00',
-            downColor: '#ff0000',
-            borderUpColor: '#00ff00',
-            borderDownColor: '#ff0000',
-            wickUpColor: '#00ff00',
-            wickDownColor: '#ff0000',
-        });
+        try {
+            chart = LightweightCharts.createChart(chartContainer, chartOptions);
+            return chart.addCandlestickSeries({
+                upColor: '#26a69a',
+                downColor: '#ef5350',
+                borderVisible: false,
+                wickUpColor: '#26a69a',
+                wickDownColor: '#ef5350',
+            });
+        } catch (error) {
+            console.error('Error creating chart:', error);
+            return null;
+        }
     };
 
     // Fetch kline (candlestick) data
     const fetchKlines = async () => {
-        if (!selectedCoin) return;
+        if (!selectedCoin) {
+            console.error('No coin selected');
+            return;
+        }
 
         const intervals = {
             '1h': '1m',
@@ -247,6 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(
                 `https://api3.binance.com/api/v3/klines?symbol=${selectedCoin.symbol}&interval=${interval}&limit=${limit}`
             );
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
             
             const candleData = data.map(d => ({
@@ -258,8 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
 
             const series = initChart();
-            series.setData(candleData);
-            chart.timeScale().fitContent();
+            if (series) {
+                series.setData(candleData);
+                chart.timeScale().fitContent();
+            }
         } catch (error) {
             console.error('Error fetching kline data:', error);
         }

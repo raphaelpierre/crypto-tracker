@@ -19,10 +19,22 @@
 <body>
     <div class="container">
         <header>
-            <h1 class="neon-text">CryptoPunk Tracker</h1>
-            <div class="market-pulse">
-                <span class="pulse-dot"></span>
-                <span>MARKET LIVE</span>
+            <div class="header-left">
+                <h1 class="neon-text">CryptoPunk Tracker</h1>
+                <div class="market-pulse">
+                    <span class="pulse-dot"></span>
+                    <span>MARKET LIVE</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="auth-buttons" id="authButtons">
+                    <button id="loginBtn" class="cyber-button">Login</button>
+                    <button id="signupBtn" class="cyber-button">Sign Up</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userEmail" class="neon-text"></span>
+                    <button id="logoutBtn" class="cyber-button">Logout</button>
+                </div>
             </div>
         </header>
         
@@ -104,6 +116,31 @@
                         <span id="detailQuoteVolume"></span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="signup">Sign Up</button>
+                </div>
+                
+                <form id="loginForm" class="auth-form active">
+                    <input type="email" id="loginEmail" class="cyber-input" placeholder="Email" required>
+                    <input type="password" id="loginPassword" class="cyber-input" placeholder="Password" required>
+                    <button type="submit" class="cyber-button">Login</button>
+                </form>
+                
+                <form id="signupForm" class="auth-form">
+                    <input type="email" id="signupEmail" class="cyber-input" placeholder="Email" required>
+                    <input type="password" id="signupPassword" class="cyber-input" placeholder="Password" required>
+                    <button type="submit" class="cyber-button">Sign Up</button>
+                </form>
             </div>
         </div>
     </div>
