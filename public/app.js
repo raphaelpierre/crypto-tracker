@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let refreshInterval;
     let isSearchActive = false;
     let chart = null;
+    let candlestickSeries = null;
     let selectedCoin = null;
     let selectedInterval = '1h';
 
@@ -169,7 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('detailQuoteVolume').textContent = `$${formatNumber(data.quoteVolume)}`;
         
         // Initialize or update chart
-        initChart();
+        if (!chart || !candlestickSeries) {
+            initChart();
+        }
         fetchKlines();
         
         // Show modal
@@ -185,59 +188,67 @@ document.addEventListener('DOMContentLoaded', () => {
             return null;
         }
 
-        if (chart) {
-            chart.remove();
+        if (!chart) {
+            const chartOptions = {
+                width: chartContainer.clientWidth,
+                height: 400,
+                layout: {
+                    background: { type: 'solid', color: 'rgba(0, 0, 0, 0.5)' },
+                    textColor: '#FFFFFF',
+                },
+                grid: {
+                    vertLines: { color: 'rgba(123, 43, 249, 0.2)' },
+                    horzLines: { color: 'rgba(123, 43, 249, 0.2)' },
+                },
+                timeScale: {
+                    timeVisible: true,
+                    secondsVisible: false,
+                    borderColor: '#7B2BF9',
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                    vertLine: {
+                        color: '#7B2BF9',
+                        width: 1,
+                        style: 1,
+                        labelBackgroundColor: '#7B2BF9',
+                    },
+                    horzLine: {
+                        color: '#7B2BF9',
+                        width: 1,
+                        style: 1,
+                        labelBackgroundColor: '#7B2BF9',
+                    },
+                },
+                rightPriceScale: {
+                    borderColor: '#7B2BF9',
+                },
+            };
+
+            try {
+                chart = LightweightCharts.createChart(chartContainer, chartOptions);
+            } catch (error) {
+                console.error('Error creating chart:', error);
+                return null;
+            }
         }
 
-        const chartOptions = {
-            width: chartContainer.clientWidth,
-            height: 400,
-            layout: {
-                background: { type: 'solid', color: 'rgba(0, 0, 0, 0.5)' },
-                textColor: '#FFFFFF',
-            },
-            grid: {
-                vertLines: { color: 'rgba(123, 43, 249, 0.2)' },
-                horzLines: { color: 'rgba(123, 43, 249, 0.2)' },
-            },
-            timeScale: {
-                timeVisible: true,
-                secondsVisible: false,
-                borderColor: '#7B2BF9',
-            },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: {
-                    color: '#7B2BF9',
-                    width: 1,
-                    style: 1,
-                    labelBackgroundColor: '#7B2BF9',
-                },
-                horzLine: {
-                    color: '#7B2BF9',
-                    width: 1,
-                    style: 1,
-                    labelBackgroundColor: '#7B2BF9',
-                },
-            },
-            rightPriceScale: {
-                borderColor: '#7B2BF9',
-            },
-        };
-
-        try {
-            chart = LightweightCharts.createChart(chartContainer, chartOptions);
-            return chart.addCandlestickSeries({
-                upColor: '#26a69a',
-                downColor: '#ef5350',
-                borderVisible: false,
-                wickUpColor: '#26a69a',
-                wickDownColor: '#ef5350',
-            });
-        } catch (error) {
-            console.error('Error creating chart:', error);
-            return null;
+        if (!candlestickSeries) {
+            try {
+                candlestickSeries = chart.addCandlestickSeries({
+                    upColor: '#26a69a',
+                    downColor: '#ef5350',
+                    borderVisible: false,
+                    wickUpColor: '#26a69a',
+                    wickDownColor: '#ef5350',
+                });
+            } catch (error) {
+                console.error('Error creating candlestick series:', error);
+                return null;
+            }
         }
+
+        return candlestickSeries;
     };
 
     // Fetch kline (candlestick) data
@@ -276,10 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 close: parseFloat(d[4])
             }));
 
-            const series = initChart();
-            if (series) {
-                series.setData(candleData);
+            if (candlestickSeries) {
+                candlestickSeries.setData(candleData);
                 chart.timeScale().fitContent();
+            } else {
+                console.error('Candlestick series not initialized');
             }
         } catch (error) {
             console.error('Error fetching kline data:', error);
