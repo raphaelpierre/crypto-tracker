@@ -248,13 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const intervals = {
-            '1h': '1m',
-            '4h': '5m',
-            '1d': '15m',
-            '1w': '1h'
+            '1h': '1h',
+            '4h': '4h',
+            '1d': '1d',
+            '1w': '1w'
         };
 
-        const limit = 500;
+        const limit = 1000;
         const interval = intervals[selectedInterval];
         
         try {
