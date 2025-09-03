@@ -168,12 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('detailVolume').textContent = formatNumber(data.volume);
         document.getElementById('detailQuoteVolume').textContent = `$${formatNumber(data.quoteVolume)}`;
         
-        // Initialize or update chart
-        initChart();
-        fetchKlines();
-        
-        // Show modal
+        // Show modal before initializing chart so dimensions are available
         modal.style.display = 'block';
+
+        // Initialize or update chart after modal is visible
+        requestAnimationFrame(() => {
+            initChart();
+            fetchKlines();
+        });
+
         stopAutoRefresh();
     };
 
