@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let refreshInterval;
     let isSearchActive = false;
     let chart = null;
+    let candlestickSeries = null;
     let selectedCoin = null;
     let selectedInterval = '1h';
 
@@ -227,13 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             chart = LightweightCharts.createChart(chartContainer, chartOptions);
-            return chart.addCandlestickSeries({
+            candlestickSeries = chart.addCandlestickSeries({
                 upColor: '#26a69a',
                 downColor: '#ef5350',
                 borderVisible: false,
                 wickUpColor: '#26a69a',
                 wickDownColor: '#ef5350',
             });
+            return candlestickSeries;
         } catch (error) {
             console.error('Error creating chart:', error);
             return null;
@@ -292,6 +294,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
+                if (chart) {
+                    chart.remove();
+                    chart = null;
+                    candlestickSeries = null;
+                }
                 if (!isSearchActive) {
                     startAutoRefresh();
                 }
@@ -301,6 +308,11 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.style.display = 'none';
+                if (chart) {
+                    chart.remove();
+                    chart = null;
+                    candlestickSeries = null;
+                }
                 if (!isSearchActive) {
                     startAutoRefresh();
                 }
