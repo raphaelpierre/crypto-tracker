@@ -1,6 +1,6 @@
 const { initializeApp } = require('firebase/app');
-const { getAuth } = require('firebase/auth');
 const { getFirestore } = require('firebase/firestore');
+const admin = require('firebase-admin');
 require('dotenv').config();
 
 const firebaseConfig = {
@@ -13,8 +13,14 @@ const firebaseConfig = {
   measurementId: "G-HFM2LRSKPJ"
 };
 
+// Initialize client SDK for Firestore operations
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Initialize Firebase Admin SDK for server-side authentication
+if (!admin.apps.length) {
+  admin.initializeApp();
+}
+const auth = admin.auth();
 
 module.exports = { auth, db };
