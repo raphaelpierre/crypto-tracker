@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardTemplate = document.getElementById('crypto-card-template');
     const marketCapElement = document.getElementById('marketCap');
     const modal = document.getElementById('detailModal');
+    const container = document.getElementById('priceChart');
     
     // Check if required elements exist
     if (!cryptoGrid || !cardTemplate) {
@@ -171,16 +172,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize or update chart
         initChart();
         fetchKlines();
-        
+
         // Show modal
         modal.style.display = 'block';
+        if (chart) {
+            chart.resize(container.clientWidth, 400);
+        }
         stopAutoRefresh();
     };
 
     // Initialize chart
     const initChart = () => {
-        const chartContainer = document.getElementById('priceChart');
-        if (!chartContainer) {
+        if (!container) {
             console.error('Chart container not found');
             return null;
         }
@@ -190,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const chartOptions = {
-            width: chartContainer.clientWidth,
+            width: container.clientWidth,
             height: 400,
             layout: {
                 background: { type: 'solid', color: 'rgba(0, 0, 0, 0.5)' },
@@ -226,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            chart = LightweightCharts.createChart(chartContainer, chartOptions);
+            chart = LightweightCharts.createChart(container, chartOptions);
             return chart.addCandlestickSeries({
                 upColor: '#26a69a',
                 downColor: '#ef5350',
@@ -370,6 +373,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Starting initial fetch...');
     fetchCryptoData();
     startAutoRefresh();
+
+    if (container) {
+        window.addEventListener('resize', () => chart && chart.resize(container.clientWidth, 400));
+    }
 
     // Add glitch effect on hover
     cryptoGrid.addEventListener('mouseover', (e) => {
