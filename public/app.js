@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let refreshInterval;
     let isSearchActive = false;
     let chart = null;
+    let candleSeries = null;
     let selectedCoin = null;
     let selectedInterval = '1h';
 
@@ -168,12 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('detailVolume').textContent = formatNumber(data.volume);
         document.getElementById('detailQuoteVolume').textContent = `$${formatNumber(data.quoteVolume)}`;
         
+        // Show modal before initializing chart so container has width
+        modal.style.display = 'block';
+
         // Initialize or update chart
         initChart();
         fetchKlines();
-        
-        // Show modal
-        modal.style.display = 'block';
         stopAutoRefresh();
     };
 
@@ -183,10 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!chartContainer) {
             console.error('Chart container not found');
             return null;
-        }
-
-        if (chart) {
-            chart.remove();
         }
 
         const chartOptions = {
@@ -226,17 +223,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            chart = LightweightCharts.createChart(chartContainer, chartOptions);
-            return chart.addCandlestickSeries({
-                upColor: '#26a69a',
-                downColor: '#ef5350',
-                borderVisible: false,
-                wickUpColor: '#26a69a',
-                wickDownColor: '#ef5350',
-            });
+            if (!chart) {
+                chart = LightweightCharts.createChart(chartContainer, chartOptions);
+            }
+            if (!candleSeries) {
+                candleSeries = chart.addCandlestickSeries({
+                    upColor: '#26a69a',
+                    downColor: '#ef5350',
+                    borderVisible: false,
+                    wickUpColor: '#26a69a',
+                    wickDownColor: '#ef5350',
+                });
+            }
         } catch (error) {
             console.error('Error creating chart:', error);
-            return null;
         }
     };
 
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const data = await response.json();
-            
+
             const candleData = data.map(d => ({
                 time: d[0] / 1000,
                 open: parseFloat(d[1]),
@@ -276,9 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 close: parseFloat(d[4])
             }));
 
-            const series = initChart();
-            if (series) {
-                series.setData(candleData);
+            if (candleSeries) {
+                candleSeries.setData(candleData);
                 chart.timeScale().fitContent();
             }
         } catch (error) {
