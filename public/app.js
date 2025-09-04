@@ -169,14 +169,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('detailVolume').textContent = formatNumber(data.volume);
         document.getElementById('detailQuoteVolume').textContent = `$${formatNumber(data.quoteVolume)}`;
         
+        // Show modal first so chart container has dimensions
+        modal.style.display = 'block';
+
         // Initialize or update chart
+        const chartContainer = document.getElementById('priceChart');
         if (!chart || !candlestickSeries) {
             initChart();
+        } else if (chartContainer) {
+            chart.resize(chartContainer.clientWidth, 400);
         }
+
         fetchKlines();
-        
-        // Show modal
-        modal.style.display = 'block';
         stopAutoRefresh();
     };
 
